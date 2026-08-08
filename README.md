@@ -33,4 +33,4 @@ ESP32 + MPU6050 based auto-deploy parachute for drones. Detects free-fall, tumbl
 - Never power on with the servo horn already in the deployed position.
 - Keep the LiPo above 3.6V before flight.
 
-Full details: `Parachute_Documentation.docx`.
+Full details: `Parachute_Documentation.md`.

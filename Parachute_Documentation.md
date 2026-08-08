@@ -1,4 +1,4 @@
-# REFLEX Smart Parachute Deployment System
+# REFLEX  Parachute Deployment System
 
 Technical Documentation | ESP32 + MPU6050
 Version 5s.0
