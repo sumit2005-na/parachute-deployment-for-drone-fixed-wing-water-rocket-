@@ -26,7 +26,7 @@ This system automatically deploys a parachute on a drone when it detects a catas
 
 ## 3. Pin Mapping
 
-| ESP32 GPIO | Connected To / Function |
+| ESP32 GPIO | Connected To / Function | 
 |---|---|
 | GPIO 18 | Servo signal (PWM output) |
 | GPIO 25 | Green LED anode via 220 Ω resistor |
