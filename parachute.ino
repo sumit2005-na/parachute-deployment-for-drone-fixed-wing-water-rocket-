@@ -1,23 +1,50 @@
 /*
  * ============================================================
- *   PARACHUTE DEPLOYMENT SYSTEM — ESP32
- *  Sensors : MPU6050 (I2C), 3.7V LiPo cell
- *  Outputs : Servo (deploy), Red LED (fault), Green LED (ready)
- *  Input   : Reset button
+ *              REFLEX — PARACHUTE DEPLOYMENT SYSTEM
+ *                         ESP32
  * ============================================================
  *
- *  Anti-false-deployment guards
- *  ─────────────────────────────
- *  1. Multi-sample confirmation  – failure must persist for
- *     CONFIRM_CYCLES consecutive 20 ms loops (~400 ms).
- *  2. Altitude / velocity gate   – parachute only deploys
- *     when estimated fall speed exceeds FREE_FALL_G_THRESHOLD.
- *  3. Armed flag                 – system must be explicitly
- *     armed after power-on (prevents deploy during init).
- *  4. One-shot latch             – once deployed the servo
- *     will NOT re-trigger without a physical reset.
- *  5. Battery gate               – deployment blocked when
- *     battery is critically low (avoids glitch at brownout).
+ *  Sensors:
+ *    • MPU6050 (I2C)
+ *    • 3.7V LiPo battery
+ *
+ *  Outputs:
+ *    • Servo      → Parachute deployment
+ *    • Red LED    → Fault / deployment status
+ *    • Green LED  → System ready status
+ *
+ *  Input:
+ *    • Reset button
+ *
+ * ============================================================
+ *                  ANTI-FALSE-DEPLOYMENT GUARDS
+ * ============================================================
+ *
+ *  1. MULTI-SAMPLE CONFIRMATION
+ *     The detected failure must persist for:
+ *
+ *        CONFIRM_CYCLES × 20 ms ≈ 400 ms
+ *
+ *     This prevents deployment from short-duration spikes
+ *     or temporary disturbances.
+ *
+ *  2. ALTITUDE / VELOCITY GATE
+ *     The parachute deploys only when the estimated fall
+ *     speed exceeds FREE_FALL_G_THRESHOLD.
+ *
+ *  3. ARMED FLAG
+ *     The system must be explicitly armed after power-on.
+ *     This prevents deployment during initialization.
+ *
+ *  4. ONE-SHOT LATCH
+ *     Once deployment occurs, the servo cannot trigger again
+ *     until the system receives a physical reset.
+ *
+ *  5. BATTERY GATE
+ *     Deployment is blocked when the battery voltage is
+ *     critically low, helping prevent glitches caused by
+ *     battery brownout.
+ *
  * ============================================================
  */
 
