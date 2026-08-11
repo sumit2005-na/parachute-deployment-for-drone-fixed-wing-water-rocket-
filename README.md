@@ -1,36 +1,129 @@
 # REFLEX — Parachute Deployment System
 
-ESP32 + MPU6050 based auto-deploy parachute for drones. Detects free-fall, tumble, or hard impact and fires a servo to release the chute, with guards against false triggers.
+**REFLEX** is an ESP32 + MPU6050 based automatic parachute deployment system designed for drones. It detects critical flight conditions such as **free-fall, excessive attitude deviation, or hard impact** and automatically triggers a servo-driven parachute release mechanism. Multiple confirmation checks help prevent false deployments caused by short-duration spikes or vibration.
 
 ## Hardware
-- ESP32 DevKit V1
-- MPU6050 (GY-521, I2C)
-- SG90 / MG90S servo
-- Green LED (ready) + Red LED (fault/deploy)
-- 3.7V LiPo + TP4056 + voltage divider (100kΩ/100kΩ) for battery sense
-- Reset push-button
 
-**Pins:** Servo `GPIO18` · Green LED `GPIO25` · Red LED `GPIO26` · Reset `GPIO27` · Battery ADC `GPIO34` · MPU6050 SDA `GPIO21` / SCL `GPIO22`
+* **ESP32 DevKit V1**
+* **MPU6050 (GY-521)** — I²C motion sensor
+* **SG90 / MG90S Servo** — parachute release mechanism
+* **Green LED** — system ready/status indicator
+* **Red LED** — fault/deployment indicator
+* **3.7V LiPo Battery**
+* **TP4056** — LiPo charging module
+* **100kΩ + 100kΩ voltage divider** — battery voltage sensing
+* **Reset Push-Button**
 
-## How it works
-1. **INIT** — both LEDs on, MPU auto-calibrates (~3s, keep drone still).
-2. **ARMING** — green blinks until 1s of stable IMU readings.
-3. **ARMED** — green solid, monitoring every 20ms for:
-   - Free-fall (`<0.25g` total accel)
-   - Attitude failure (`>60°` roll/pitch)
-   - Hard impact (`>3.5g` total accel)
-4. A failure must persist for 20 consecutive cycles (~400ms) before it's confirmed — filters out spikes/vibration.
-5. **DEPLOYING → DEPLOYED** — servo fires to 90°, red LED blinks. Deployment is blocked if battery is below 3.30V.
-6. Press the reset button to stow the servo and re-arm.
+### Pin Configuration
 
-## Setup
-- Arduino IDE, board: **ESP32 Dev Module**
-- Libraries: `ESP32Servo`, `MPU6050_light` (by rfetick)
-- Tune `FREE_FALL_G_THRESHOLD`, `CRASH_G_THRESHOLD`, `TILT_THRESHOLD_DEG`, `CONFIRM_CYCLES` at the top of the sketch for your airframe.
+| Component    | ESP32 GPIO |
+| ------------ | ---------: |
+| Servo        |   `GPIO18` |
+| Green LED    |   `GPIO25` |
+| Red LED      |   `GPIO26` |
+| Reset Button |   `GPIO27` |
+| Battery ADC  |   `GPIO34` |
+| MPU6050 SDA  |   `GPIO21` |
+| MPU6050 SCL  |   `GPIO22` |
 
-## Safety
-- Bench test with the parachute mechanism disconnected before first flight.
-- Never power on with the servo horn already in the deployed position.
-- Keep the LiPo above 3.6V before flight.
+## How It Works
 
-Full details: `Parachute_Documentation.md`.
+### 1. INIT — System Initialization
+
+When powered on:
+
+* Both LEDs turn **ON**.
+* The MPU6050 automatically calibrates for approximately **3 seconds**.
+* The drone must remain **completely still during calibration**.
+
+### 2. ARMING — Stability Check
+
+After initialization:
+
+* The **green LED blinks**.
+* The system checks for approximately **1 second** of stable IMU readings.
+* Once stable readings are confirmed, the system enters the **ARMED** state.
+
+### 3. ARMED — Flight Monitoring
+
+When armed, REFLEX continuously monitors the drone's motion every **20 ms**.
+
+It looks for three critical conditions:
+
+* **Free-Fall:** Total acceleration `< 0.25g`
+* **Attitude Failure:** Roll or pitch `> 60°`
+* **Hard Impact:** Total acceleration `> 3.5g`
+
+These conditions are continuously evaluated while the system is armed.
+
+### 4. Failure Confirmation
+
+A detected failure is **not immediately treated as a deployment event**.
+
+The detected condition must remain present for **20 consecutive monitoring cycles**.
+
+At a 20 ms monitoring interval:
+
+**20 × 20 ms ≈ 400 ms**
+
+This confirmation period helps filter out short-duration acceleration spikes, vibration, and other temporary disturbances that could otherwise cause a false deployment.
+
+### 5. DEPLOYING → DEPLOYED
+
+Once a failure is confirmed:
+
+* The system enters the **DEPLOYING** state.
+* Before deployment, the battery voltage is checked.
+* Deployment is **blocked if the battery voltage is below 3.30V**.
+* If the battery level is sufficient, the servo moves to **90°** to release the parachute.
+* The system then enters the **DEPLOYED** state.
+* The **red LED blinks** to indicate deployment/fault status.
+
+### 6. Reset and Re-arming
+
+After deployment:
+
+* Press the **reset button**.
+* The servo returns to its stowed position.
+* The system starts the initialization and arming process again.
+
+## Software Setup
+
+Use the following development environment:
+
+* **Arduino IDE**
+* Board: **ESP32 Dev Module**
+
+### Required Libraries
+
+* `ESP32Servo`
+* `MPU6050_light` by **rfetick**
+
+## Adjustable Parameters
+
+The following parameters can be tuned at the top of the sketch according to the airframe and flight characteristics:
+
+* `FREE_FALL_G_THRESHOLD`
+* `CRASH_G_THRESHOLD`
+* `TILT_THRESHOLD_DEG`
+* `CONFIRM_CYCLES`
+
+These allow the detection sensitivity and confirmation behavior to be adjusted without changing the overall system architecture.
+
+## Safety & Testing
+
+Before using REFLEX on an actual drone:
+
+* **Bench-test the electronics and detection logic with the parachute mechanism disconnected.**
+* Verify the servo movement and sensor readings before connecting the deployment mechanism.
+* **Never power on the system with the servo horn already in the deployed position.**
+* Keep the LiPo battery **above 3.6V before flight**.
+* Perform controlled testing before attempting actual flight deployment.
+
+---
+
+### Documentation
+
+For complete implementation details, configuration, and operation, refer to:
+
+**`Parachute_Documentation.md`**
