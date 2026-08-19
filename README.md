@@ -133,13 +133,13 @@ For complete implementation details, configuration, and operation, refer to:
 ### Reference Images
 
 ### Image 1
-![Image 1](https://github.com/user-attachments/assets/b5a1c037-145f-4249-9975-6022778a7818)
+<img width="400" alt="Image 1" src="https://github.com/user-attachments/assets/b5a1c037-145f-4249-9975-6022778a7818">
 
 ### Image 2
-![Image 2](https://github.com/user-attachments/assets/b5fd5bc5-785b-4f8e-ae9f-eec071d88f56)
+<img width="400" alt="Image 2" src="https://github.com/user-attachments/assets/b5fd5bc5-785b-4f8e-ae9f-eec071d88f56">
 
 ### Image 3
-![Image 3](https://github.com/user-attachments/assets/dce06352-d882-440b-852b-943728b8a35f)
+<img width="400" alt="Image 3" src="https://github.com/user-attachments/assets/dce06352-d882-440b-852b-943728b8a35f">
 
 ### Image 4
-![Image 4](https://github.com/user-attachments/assets/d912ba1c-d201-4ec2-84e3-0cdfed12ca81)
+<img width="400" alt="Image 4" src="https://github.com/user-attachments/assets/d912ba1c-d201-4ec2-84e3-0cdfed12ca81">
