@@ -133,7 +133,7 @@ For complete implementation details, configuration, and operation, refer to:
 ### Reference Images
 
 ### Image 1
-<img width="400" alt="Image 1" src="https://github.com/user-attachments/assets/b5a1c037-145f-4249-9975-6022778a7818">
+<img height = "400" width="400" alt="Image 1" src="https://github.com/user-attachments/assets/b5a1c037-145f-4249-9975-6022778a7818">
 
 ### Image 2
 <img width="400" alt="Image 2" src="https://github.com/user-attachments/assets/b5fd5bc5-785b-4f8e-ae9f-eec071d88f56">
